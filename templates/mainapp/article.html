@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+    <!-- Основной контент -->
+    <main>
+        <!-- Контент статьи -->
+        <div class="container">
+            <div class="row">
+                <!-- Боковая панель -->
+                {% include 'includes/sidebar.html' %}
+                <div class="col-md-8">
+                    {% if article %}
+                        <!-- Слайдер картинок -->
+
+                        {% include 'includes/slider-article.html' %}
+
+                        <!-- Заголовок статьи -->
+                        <h1>{{ article.title }}</h1>
+                        <!-- Основной текст -->
+                        <p>{{ article.content }}</p>
+                        <!-- Ссылка на автора -->
+                        <p>Автор: <a href="#">{{ article.author.username }}</a></p>
+                    {% endif %}
+                    <!-- Кнопка "Добавить комментарий" -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal">
+                        Добавить комментарий
+                    </button>
+                    {% if comment %}
+                        <!-- Карточка комментария -->
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Имя пользователя</h5>
+                                <p class="card-text">Текст комментария. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                <p class="card-text"><small class="text-muted">Дата комментария: 01.01.2023</small></p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Модальное окно для формы комментария -->
+        <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="commentModalLabel">Добавить комментарий</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Форма для комментария -->
+                        <form>
+                            <div class="form-group">
+                                <label for="comment">Комментарий:</label>
+                                <textarea class="form-control" id="comment" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Отправить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
