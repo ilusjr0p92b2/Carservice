@@ -1,0 +1,54 @@
+<style>
+    /* Стили для затемненного фона */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    /* Стили для всплывающего окна */
+    .popup {
+        background-color: white;
+        margin-top: 5%;
+        margin-left: 35%;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        max-width: 500px;
+        justify-content: center;
+        align-content: space-between;
+    }
+
+</style>
+<!-- Затемненный фон и всплывающее окно -->
+<div class="overlay login_overlay" style='display: none;' id="login_overlay">
+    <div class="popup">
+        <h4>Авторизация</h4>
+         <form method="post" action="{% url 'login' %}" id="loginForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="emailOrPhone">Email или номер телефона</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="Введите ваш email" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Введите ваш пароль" required autocomplete="current-password">
+            </div>
+            <div class="text-right">
+                <button type="button" class="btn btn-secondary mr-2" id="closeLoginPopupBtn">Закрыть</button>
+                <button type="submit" class="btn btn-primary">Войти</button>
+                <a href="{% url 'register' %}" class="btn btn-link">Регистрация</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

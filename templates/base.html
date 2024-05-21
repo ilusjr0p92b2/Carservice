@@ -7,12 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная страница</title>
     <!-- Подключаем стили Bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "css/style.css" %}">
 
 </head>
 <body>
+<!-- Popup входа -->
 {% include './authapp/popup_login.html' %}
+<!-- Popup записи в сервис -->
+{% include './service/popup_service.html' %}
 <!-- Верхнее меню и логотип -->
 {% include 'includes/header.html' %}
 <!-- Слайдер -->
@@ -35,32 +38,9 @@
 
 
 <!-- Подключаем скрипты Bootstrap и пользовательский JavaScript -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script>
-    // Показать popup при нажатии на кнопку "Войти"
-    document.getElementById("loginBtn").addEventListener("click", function () {
-        document.getElementById("overlay").style.display = "block";
-        console.log('pup');// Отображаем overlay и popup
-    });
 
-    // Закрыть popup при нажатии на кнопку "Закрыть"
-    document.getElementById("closePopupBtn").addEventListener("click", function () {
-        document.getElementById("overlay").style.display = "none"; // Скрываем overlay и popup при нажатии на кнопку "Закрыть"
-    });
-
-    // Предотвращение закрытия окна при клике внутри него
-    document.querySelector(".popup").addEventListener("click", function (event) {
-        event.stopPropagation();
-    });
-
-    // Закрыть popup при клике вне его
-    document.querySelector(".overlay").addEventListener("click", function () {
-        document.getElementById("overlay").style.display = "none"; // Скрываем overlay и popup при клике вне его
-    });
-</script>
-ючаем скрипты Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="{% static "js/jquery-3.5.1.slim.min.js" %}"></script>
+<script src="{% static "js/popper.min.js" %}"></script>
+<script src="{% static "js/bootstrap.min.js" %}"></script>
 </body>
 </html>

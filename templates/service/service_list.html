@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block main %}
+    <div class="col-md-9">
+        <div class="main-content">
+            <h2>Выберите услуги</h2>
+
+            <!-- Таблица с услугами -->
+            <table class="table services-table">
+                <thead>
+                <tr>
+                    <th>Выбрать</th>
+                    <th>Название услуги</th>
+                    <th>Категория</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="service-item">
+                    <td><input type="checkbox" class="service-checkbox"></td>
+                    <td>Услуга 1</td>
+                    <td>Категория 1</td>
+                </tr>
+                <tr class="service-item">
+                    <td><input type="checkbox" class="service-checkbox"></td>
+                    <td>Услуга 2</td>
+                    <td>Категория 2</td>
+                </tr>
+                <!-- Добавьте дополнительные услуги здесь -->
+                </tbody>
+            </table>
+            <!-- Кнопка записи на услуги -->
+            <button type="button" class="btn btn-primary" id="serviceBtn">Записаться на выбранные услуги</button>
+        </div>
+    </div>
+{% endblock %}
+
+<script>
+    // Показать popup при нажатии на кнопку "Записаться"
+    document.getElementById("serviceBtn").addEventListener("click", function () {
+        document.getElementById("service_overlay").style.display = "block";
+        console.log('pup');// Отображаем overlay и popup
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("closeServicePopupBtn").addEventListener("click", function () {
+            document.querySelector(".service_overlay").style.display = "none";
+            // Скрываем overlay и popup при нажатии на кнопку "Закрыть"
+        });
+    });
+</script>

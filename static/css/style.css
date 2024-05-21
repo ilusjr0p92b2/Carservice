@@ -1,0 +1,119 @@
+/* Стили для шапки */
+header {
+    background-color: #f8f9fa;
+    padding: 15px 0;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    font-size: 18px;
+}
+
+
+
+/* Стили для слайдера */
+#carouselExampleSlidesOnly {
+    margin-bottom: 30px;
+}
+
+/* Стили для слайдера */
+.slider {
+    margin: 20px auto;
+    max-width: 1200px;
+    height: 400px;
+}
+
+/* Стили для слайдера */
+.slider-article {
+    margin: 20px auto;
+    max-width: 800px;
+
+}
+
+/* Стили для боковой панели */
+.sidebar {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+/* Стили для основного контента */
+.main-content {
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+/* Стили для футера */
+footer {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 15px 0;
+}
+
+/* Стили для статей */
+.articles {
+    margin-top: 30px;
+}
+
+.article {
+    margin-bottom: 30px;
+}
+
+.article h2 {
+    margin-bottom: 10px;
+}
+
+.article p {
+    margin-bottom: 10px;
+}
+
+.article .read-more {
+    color: #007bff;
+}
+
+.sidebar {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+.sidebar .search-form {
+    margin-bottom: 20px;
+}
+
+.sidebar .popular-products {
+    margin-top: 30px;
+}
+
+.container {
+    margin-top: 10px;
+}
+
+/* Стили для затемненного фона */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Стили для всплывающего окна */
+.popup {
+    background-color: white;
+    margin-top: 5%;
+    margin-left: 35%;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: 500px;
+    justify-content: center;
+    align-content: space-between;
+}

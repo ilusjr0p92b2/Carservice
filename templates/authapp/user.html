@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <!-- Подключаем стили Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Подключаем наш пользовательский CSS -->
+    <style>
+        /* Стили для личного кабинета */
+        .profile-info {
+            margin-bottom: 30px;
+        }
+
+        .car-list {
+            margin-bottom: 30px;
+        }
+
+        .car-item {
+            margin-bottom: 10px;
+        }
+
+        .repairs-table {
+            margin-top: 30px;
+        }
+
+        .repairs-table th,
+        .repairs-table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h2>Личный кабинет</h2>
+                <!-- Информация о пользователе -->
+                <div class="profile-info">
+                    <h4>Информация о пользователе</h4>
+                    <p>Имя: Иван Иванов</p>
+                    <p>Email: ivan@example.com</p>
+                    <p>Телефон: +7 (123) 456-7890</p>
+                    <!-- Добавьте дополнительную информацию о пользователе здесь -->
+                </div>
+                <!-- Список машин пользователя -->
+                <div class="car-list">
+                    <h4>Мои машины</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item car-item">
+                            <span>Марка: Toyota, Модель: Camry</span>
+                            <!-- Таблица с информацией о ремонтах -->
+                            <table class="table repairs-table">
+                                <thead>
+                                    <tr>
+                                        <th>Услуга</th>
+                                        <th>Дата</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Замена масла</td>
+                                        <td>2024-04-16</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Замена фильтра воздушного</td>
+                                        <td>2024-03-25</td>
+                                    </tr>
+                                    <!-- Добавьте дополнительные строки с информацией о ремонтах здесь -->
+                                </tbody>
+                            </table>
+                        </li>
+                        <li class="list-group-item car-item">
+                            <span>Марка: BMW, Модель: X5</span>
+                            <!-- Таблица с информацией о ремонтах -->
+                            <table class="table repairs-table">
+                                <thead>
+                                    <tr>
+                                        <th>Услуга</th>
+                                        <th>Дата</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Ремонт тормозной системы</td>
+                                        <td>2024-02-10</td>
+                                    </tr>
+                                    <!-- Добавьте дополнительные строки с информацией о ремонтах здесь -->
+                                </tbody>
+                            </table>
+                        </li>
+                        <!-- Добавьте дополнительные машины пользователя здесь -->
+                    </ul>
+                </div>
+                <!-- Кнопки управления -->
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary">Редактировать машины</button>
+                    <button type="button" class="btn btn-primary">Редактировать данные</button>
+                    <button type="button" class="btn btn-primary">Добавить машину</button>
+                    <button type="button" class="btn btn-primary">Сменить пароль</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключаем скрипты Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,12 +1,18 @@
+<style>
+    #loginBtn {
+        cursor: pointer;
+    }
+</style>
+
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
+        <li class="nav-item {% if current_url == 'home' %}active{% endif %}">
             <a class="nav-link" href="{% url 'home' %}">Главная</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item {% if current_url == 'service_list' %}active{% endif %}">
             <a class="nav-link" href="{% url 'service_list' %}">Услуги</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item {% if current_url == 'service_list' %}active{% endif %}">
             <a class="nav-link" href="{% url 'about' %}">Контакты</a>
         </li>
 
@@ -17,7 +23,7 @@
 
         {% else %}
             <li class="nav-item">
-                <a class="nav-link"  id='loginBtn'>Войти</a>
+                <a class="nav-link" id='loginBtn'>Войти</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'register' %}">Регистрация</a>
