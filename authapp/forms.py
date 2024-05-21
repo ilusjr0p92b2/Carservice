@@ -4,9 +4,9 @@ from authapp.models import User
 
 
 class LoginForm(forms.Form):
-    email = forms.CharField(
+    email = forms.EmailField(
         max_length=255,
-        widget=forms.TextInput(attrs={
+        widget=forms.EmailInput(attrs={
             'class': 'form-control',
             'placeholder': 'Введите ваш email',
             'autocomplete': 'email'
@@ -19,6 +19,24 @@ class LoginForm(forms.Form):
             'autocomplete': 'current-password'
         })
     )
+
+
+# class LoginForm(forms.Form):
+#     email = forms.CharField(
+#         max_length=255,
+#         widget=forms.TextInput(attrs={
+#             'class': 'form-control',
+#             'placeholder': 'Введите ваш email',
+#             'autocomplete': 'email'
+#         })
+#     )
+#     password = forms.CharField(
+#         widget=forms.PasswordInput(attrs={
+#             'class': 'form-control',
+#             'placeholder': 'Введите ваш пароль',
+#             'autocomplete': 'current-password'
+#         })
+#     )
 
 
 class RegisterForm(forms.ModelForm):
