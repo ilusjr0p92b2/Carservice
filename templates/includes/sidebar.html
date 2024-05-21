@@ -30,7 +30,7 @@
                 <button type="submit" class="btn btn-primary">Применить фильтр</button>
             </form>
         {% endif %}
-        {% if not request.user.isauthenticated %}
+        {% if not request.user.is_authenticated  %}
             <h4>Авторизация</h4>
             <!-- Форма для авторизации -->
             <form>
