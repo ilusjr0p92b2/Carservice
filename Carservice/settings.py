@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'Carservice.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://carservice_ewv8_user:ji7XF0mcNZtPmAcOCGxZmVNEDRz7Yrbn@dpg-cp9knpkf7o1s73a2gfd0-a/carservice_ewv8',
+        default='postgres://carservice_ewv8_user:ji7XF0mcNZtPmAcOCGxZmVNEDRz7Yrbn@dpg-cp9knpkf7o1s73a2gfd0-a.oregon-postgres.render.com/carservice_ewv8',
         conn_max_age=600,
         ssl_require=True
     )
