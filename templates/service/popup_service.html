@@ -1,5 +1,5 @@
 <!-- Затемненный фон и всплывающее окно -->
-<div class="overlay service_overlay" id="service_overlay">
+<div class="overlay service_overlay" style="display: none" id="service_overlay">
     <div class="popup">
         <h4>Подтверждение записи на услугу</h4>
         <p id="selected-services-description">Выбранные услуги:</p>
@@ -51,7 +51,7 @@
             document.getElementById("selected-services-description").innerText = `Выбранные услуги: ${selectedServices.join(', ')}`;
             document.getElementById("selected-services-input").value = selectedServiceIds.join(',');
 
-            document.getElementById("service_overlay").style.display = "flex";
+            document.getElementById("service_overlay").style.display = "";
         } else {
             alert("Пожалуйста, выберите хотя бы одну услугу.");
         }
