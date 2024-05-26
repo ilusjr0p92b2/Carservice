@@ -20,7 +20,7 @@ class Article(models.Model):
     categories = models.ManyToManyField(Category)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.BinaryField()
+    image = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.title
