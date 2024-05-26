@@ -1,49 +1,196 @@
+{#{% extends 'base.html' %}#}
+{##}
+{#{% block title %}Запись на сервис{% endblock %}#}
+{#{% block slider %}{% include 'includes/slider.html' %}{% endblock %}#}
+{#{% block sidebar %}{% include 'includes/sidebar.html' %}{% endblock %}#}
+{#{% block main %}#}
+{#    <div class="col-md-9">#}
+{#        <div class="main-content">#}
+{#            <h2>Выберите услуги для {{ car.brand }} {{ car.model }}</h2>#}
+{#            <table class="table services-table">#}
+{#                <thead>#}
+{#                <tr>#}
+{#                    <th>Выбрать</th>#}
+{#                    <th>Название услуги</th>#}
+{#                    <th>Цена</th>#}
+{#                </tr>#}
+{#                </thead>#}
+{#                <tbody>#}
+{#                {% for service in services %}#}
+{#                    <tr class="service-item">#}
+{#                        <td><input type="checkbox" class="service-checkbox" value="{{ service.id }}"></td>#}
+{#                        <td>{{ service.name }}</td>#}
+{#                        <td>{{ service.price }}</td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#                </tbody>#}
+{#            </table>#}
+{#            {% if not request.user.is_authenticated %}Для продолжения нужно <a href="{% url 'login' %}">зарегистрроваться</a><br>{% endif %}#}
+{#            <button type="button" class="btn btn-primary" id="serviceBtn" {% if not request.user.is_authenticated %}disabled="disabled"{% endif %}>Записаться на выбранные услуги</button>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    {% include 'service/popup_service.html' %}#}
+{##}
+{#    <!-- Модальное окно -->#}
+{#    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">#}
+{#        <div class="modal-dialog">#}
+{#            <div class="modal-content">#}
+{#                <div class="modal-header">#}
+{#                    <h5 class="modal-title" id="successModalLabel">Успешное бронирование</h5>#}
+{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                        <span aria-hidden="true">&times;</span>#}
+{#                    </button>#}
+{#                </div>#}
+{#                <div class="modal-body">#}
+{#                    {% if messages %}#}
+{#                        {% for message in messages %}#}
+{#                            <p>{{ message }}</p>#}
+{#                        {% endfor %}#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#                <div class="modal-footer">#}
+{#                    <button type="button" class="btn btn-primary" data-dismiss="modal">ОК</button>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>#}
+{#    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>#}
+{##}
+{#    <script>#}
+{#        $(document).ready(function () {#}
+{#            {% if messages %}#}
+{#                $('#successModal').modal('show');#}
+{#            {% endif %}#}
+{#        });#}
+{#    </script>#}
+{##}
+{#    <script>#}
+{#        document.getElementById("serviceBtn").addEventListener("click", function () {#}
+{#            const selectedServices = [];#}
+{#            const selectedServiceIds = [];#}
+{#            document.querySelectorAll(".service-checkbox:checked").forEach(checkbox => {#}
+{#                const serviceRow = checkbox.closest('.service-item');#}
+{#                const serviceName = serviceRow.querySelector('td:nth-child(2)').innerText;#}
+{#                selectedServices.push(serviceName);#}
+{#                selectedServiceIds.push(checkbox.value);#}
+{#            });#}
+{##}
+{#            if (selectedServices.length > 0) {#}
+{#                document.getElementById("selected-services-description").innerText = `Выбранные услуги: ${selectedServices.join(', ')}`;#}
+{#                document.getElementById("selected-services-input").value = selectedServiceIds.join(',');#}
+{##}
+{#                document.getElementById("service_overlay").style.display = "flex";#}
+{#            } else {#}
+{#                alert("Пожалуйста, выберите хотя бы одну услугу.");#}
+{#            }#}
+{#        });#}
+{##}
+{#        document.getElementById("closeServicePopupBtn").addEventListener("click", function () {#}
+{#            document.getElementById("service_overlay").style.display = "none";#}
+{#        });#}
+{##}
+{#        document.addEventListener("DOMContentLoaded", function () {#}
+{#            document.querySelector(".service_overlay").style.display = "none";#}
+{#        });#}
+{#    </script>#}
+{#{% endblock %}#}
+
+
 {% extends 'base.html' %}
+
+{% block title %}Запись на сервис{% endblock %}
+{% block slider %}{% include 'includes/slider.html' %}{% endblock %}
+{% block sidebar %}{% include 'includes/sidebar.html' %}{% endblock %}
 {% block main %}
     <div class="col-md-9">
         <div class="main-content">
-            <h2>Выберите услуги</h2>
-
-            <!-- Таблица с услугами -->
+            <h2>Выберите услуги для {{ car.brand }} {{ car.model }}</h2>
             <table class="table services-table">
                 <thead>
                 <tr>
                     <th>Выбрать</th>
                     <th>Название услуги</th>
-                    <th>Категория</th>
+                    <th>Цена</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="service-item">
-                    <td><input type="checkbox" class="service-checkbox"></td>
-                    <td>Услуга 1</td>
-                    <td>Категория 1</td>
-                </tr>
-                <tr class="service-item">
-                    <td><input type="checkbox" class="service-checkbox"></td>
-                    <td>Услуга 2</td>
-                    <td>Категория 2</td>
-                </tr>
-                <!-- Добавьте дополнительные услуги здесь -->
+                {% for service in services %}
+                    <tr class="service-item">
+                        <td><input type="checkbox" class="service-checkbox" value="{{ service.id }}"></td>
+                        <td>{{ service.name }}</td>
+                        <td>{{ service.price }}</td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
-            <!-- Кнопка записи на услуги -->
-            <button type="button" class="btn btn-primary" id="serviceBtn">Записаться на выбранные услуги</button>
+            {% if not request.user.is_authenticated %}Для продолжения нужно <a href="{% url 'login' %}">зарегистрроваться</a><br>{% endif %}
+            <button type="button" class="btn btn-primary" id="serviceBtn" {% if not request.user.is_authenticated %}disabled="disabled"{% endif %}>Записаться на выбранные услуги</button>
         </div>
     </div>
-{% endblock %}
 
-<script>
-    // Показать popup при нажатии на кнопку "Записаться"
-    document.getElementById("serviceBtn").addEventListener("click", function () {
-        document.getElementById("service_overlay").style.display = "block";
-        console.log('pup');// Отображаем overlay и popup
-    });
+    {% include 'service/popup_service.html' %}
 
-    document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("closeServicePopupBtn").addEventListener("click", function () {
-            document.querySelector(".service_overlay").style.display = "none";
-            // Скрываем overlay и popup при нажатии на кнопку "Закрыть"
+    <!-- Модальное окно -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Успешное бронирование</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">ОК</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            {% if messages %}
+                $('#successModal').modal('show');
+            {% endif %}
         });
-    });
-</script>
+
+        document.getElementById("serviceBtn").addEventListener("click", function () {
+            const selectedServices = [];
+            const selectedServiceIds = [];
+            document.querySelectorAll(".service-checkbox:checked").forEach(checkbox => {
+                const serviceRow = checkbox.closest('.service-item');
+                const serviceName = serviceRow.querySelector('td:nth-child(2)').innerText;
+                selectedServices.push(serviceName);
+                selectedServiceIds.push(checkbox.value);
+            });
+
+            if (selectedServices.length > 0) {
+                document.getElementById("selected-services-description").innerText = `Выбранные услуги: ${selectedServices.join(', ')}`;
+                document.getElementById("selected-services-input").value = selectedServiceIds.join(',');
+
+                document.getElementById("service_overlay").style.display = "flex";
+            } else {
+                alert("Пожалуйста, выберите хотя бы одну услугу.");
+            }
+        });
+
+        document.getElementById("closeServicePopupBtn").addEventListener("click", function () {
+            document.getElementById("service_overlay").style.display = "none";
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".service_overlay").style.display = "none";
+        });
+    </script>
+{% endblock %}

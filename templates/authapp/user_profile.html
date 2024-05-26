@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}Личный кабинет{% endblock %}
+
+{% block main %}
+    <style>
+        .profile-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .profile-column {
+            flex: 1;
+            margin: 10px;
+            min-width: 300px;
+        }
+
+        .profile-column form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-table td input {
+            width: 100%; /* Установка ширины полей формы */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .btn-submit {
+            flex: 1;
+            margin: 5px;
+        }
+    </style>
+    <div class="profile-container">
+        <div class="profile-column">
+            <h4>Информация о пользователе</h4>
+            <form method="post" action="{% url 'edit_profile' %}">
+                {% csrf_token %}
+                <div class="profile-info">
+                    <table class="profile-table">
+                        {{ user_form.as_table }}
+                    </table>
+                </div>
+                <div class="button-container">
+                    <button type="submit" name="save_user" class="btn btn-success btn-submit">Сохранить</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="profile-column">
+            <h4>Смена пароля</h4>
+            <form method="post" action="{% url 'edit_profile' %}">
+                {% csrf_token %}
+                <div class="profile-info">
+                    <table class="profile-table">
+                        {{ password_form.as_table }}
+                    </table>
+                    После смены пароля вам нужно будет заново войти в аккаунт
+                </div>
+                <div class="button-container">
+                    <button type="submit" name="save_password" class="btn btn-success btn-submit">Сменить пароль</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="profile-column">
+            <h4>Информация об автомобиле</h4>
+            <form method="post" action="{% url 'edit_profile' %}">
+                {% csrf_token %}
+                <div class="profile-info">
+                    <table class="profile-table">
+                        {{ car_form.as_table }}
+                    </table>
+                </div>
+                <div class="button-container">
+                    <button type="submit" name="save_car" class="btn btn-success btn-submit">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="car-list">
+        <h4>Мои заказы</h4>
+        {% if orders %}
+            <ul class="list-group">
+                {% for order in orders %}
+                    <li class="list-group-item car-item">
+                        <span>Марка: {{ order.car.brand }}, Модель: {{ order.car.model }}</span>
+                        <table class="table repairs-table">
+                            <thead>
+                            <tr>
+                                <th>Услуга</th>
+                                <th>Дата</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for service in order.services.all %}
+                                <tr>
+                                    <td>{{ service.name }}</td>
+                                    <td>{{ order.date }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>У вас пока нет заказов</p>
+        {% endif %}
+    </div>
+{% endblock %}

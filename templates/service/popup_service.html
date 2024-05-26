@@ -1,45 +1,31 @@
-<style>
-    /* Стили для затемненного фона */
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    }
-
-    /* Стили для всплывающего окна */
-    .popup {
-        background-color: white;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        max-width: 500px;
-    }
-</style>
 <!-- Затемненный фон и всплывающее окно -->
-<div class="overlay service_overlay" style='display: none;' id="service_overlay">
+<div class="overlay service_overlay" id="service_overlay">
     <div class="popup">
         <h4>Подтверждение записи на услугу</h4>
-        <p>Описание услуги: Замена масла и фильтра воздушного</p>
+        <p id="selected-services-description">Выбранные услуги:</p>
         <!-- Форма для ввода данных -->
-        <form>
+        <form id="serviceForm" method="post" action="{% url 'order_service' %}">
+            {% csrf_token %}
+            <input type="hidden" name="selected_services" id="selected-services-input">
             <div class="form-group">
                 <label for="name">Имя</label>
-                <input type="text" class="form-control" id="name" placeholder="Введите ваше имя" required>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Введите ваше имя" value="{{ user.first_name }}" required>
             </div>
             <div class="form-group">
                 <label for="phone">Номер телефона</label>
-                <input type="tel" class="form-control" id="phone" placeholder="Введите ваш номер телефона" required>
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Введите ваш номер телефона" value="{{ user.phone }}" required>
+            </div>
+            <div class="form-group">
+                <label for="car">Автомобиль</label>
+                <input class="form-control" id="car" name="brand" placeholder="Введите марку автомобиля" required value="{{ car.brand }}">
+                <input class="form-control" id="car" name="model" placeholder="Введите модель автомобиля" required value="{{ car.model }}">
+                <input class="form-control" id="car" name="vin" placeholder="Введите vin автомобиля" required value="{{ car.vin }}">
+                <input class="form-control" id="car" name="year" placeholder="Введите год производства автомобиля" required value="{{ car.year }}">
             </div>
             <div class="form-group">
                 <label for="date">Дата и время</label>
-                <input type="datetime-local" class="form-control" id="date" required>
+                <input type="date" class="form-control" id="date" name="date" required value="{{ current_date }}">
+                <input type="time" class="form-control" id="time" name="time" required value="{{ current_time }}">
             </div>
             <!-- Кнопки для подтверждения или закрытия окна -->
             <div class="text-right">
@@ -50,4 +36,32 @@
     </div>
 </div>
 
+<script>
+    document.getElementById("serviceBtn").addEventListener("click", function () {
+        const selectedServices = [];
+        const selectedServiceIds = [];
+        document.querySelectorAll(".service-checkbox:checked").forEach(checkbox => {
+            const serviceRow = checkbox.closest('.service-item');
+            const serviceName = serviceRow.querySelector('td:nth-child(2)').innerText;
+            selectedServices.push(serviceName);
+            selectedServiceIds.push(checkbox.value);
+        });
 
+        if (selectedServices.length > 0) {
+            document.getElementById("selected-services-description").innerText = `Выбранные услуги: ${selectedServices.join(', ')}`;
+            document.getElementById("selected-services-input").value = selectedServiceIds.join(',');
+
+            document.getElementById("service_overlay").style.display = "flex";
+        } else {
+            alert("Пожалуйста, выберите хотя бы одну услугу.");
+        }
+    });
+
+    document.getElementById("closeServicePopupBtn").addEventListener("click", function () {
+        document.getElementById("service_overlay").style.display = "none";
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".service_overlay").style.display = "none";
+    });
+</script>

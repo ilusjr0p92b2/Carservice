@@ -15,8 +15,21 @@
         <li class="nav-item {% if current_url == 'service_list' %}active{% endif %}">
             <a class="nav-link" href="{% url 'about' %}">Контакты</a>
         </li>
+        {% if user.is_superuser %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:index' %}">Админпанель</a>
+            </li>
 
+        {% endif %}
         {% if user.is_authenticated %}
+            <li class="nav-item">
+                {% if user.is_employee %}
+                    <a class="nav-link" href="{% url 'orders' %}">Заказы</a>
+                    </li>
+                {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'user' user.id %}">Личный кабинет</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
             </li>

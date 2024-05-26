@@ -1,71 +1,214 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block main %}
-
-    <!-- Основной контент -->
-    <main>
-        <!-- Контент статьи -->
-        <div class="container">
-            <div class="row">
-                <!-- Боковая панель -->
-                {% include 'includes/sidebar.html' %}
-                <div class="col-md-8">
-                    {% if article %}
-                        <!-- Слайдер картинок -->
-
-                        {% include 'includes/slider-article.html' %}
-
-                        <!-- Заголовок статьи -->
+    <div class="container">
+        <div class="main-content">
+            {% if article %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="{{ article.image.url }}" class="img-fluid" alt="{{ article.title }}">
+                    </div>
+                    <div class="col-md-8">
                         <h1>{{ article.title }}</h1>
-                        <!-- Основной текст -->
+                        <p>
+                            <small class="text-muted">Дата публикации: {{ article.created_at|date:"d.m.Y" }}</small>
+                            <br>
+                            Автор: <a href="#">{{ article.author.username }}</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
                         <p>{{ article.content }}</p>
-                        <!-- Ссылка на автора -->
-                        <p>Автор: <a href="#">{{ article.author.username }}</a></p>
-                    {% endif %}
-                    <!-- Кнопка "Добавить комментарий" -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal">
-                        Добавить комментарий
-                    </button>
-                    {% if comment %}
-                        <!-- Карточка комментария -->
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Имя пользователя</h5>
-                                <p class="card-text">Текст комментария. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                <p class="card-text"><small class="text-muted">Дата комментария: 01.01.2023</small></p>
-                            </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal">
+                    Добавить комментарий
+                </button>
+            {% endif %}
+
+            <div class="mt-5">
+                {% for comment in comments %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ comment.author.username }}</h5>
+                            <p class="card-text">{{ comment.content }}</p>
+                            <p class="card-text">
+                                {% for i in "12345" %}
+                                    <span class="fa fa-star{% if i > comment.rating %}-o{% endif %}"></span>
+                                {% endfor %}
+                            </p>
+                            <p class="card-text"><small class="text-muted">Дата комментария: {{ comment.created_at|date:"d.m.Y" }}</small></p>
+                            {% if request.user == comment.author or request.user.is_superuser %}
+                                <form method="post" action="{% url 'comment_delete' comment.pk %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                </form>
+                            {% endif %}
                         </div>
-                    {% endif %}
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- Модальное окно для формы комментария -->
-        <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="commentModalLabel">Добавить комментарий</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
-                    <div class="modal-body">
-                        <!-- Форма для комментария -->
-                        <form>
-                            <div class="form-group">
-                                <label for="comment">Комментарий:</label>
-                                <textarea class="form-control" id="comment" rows="3"></textarea>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentModalLabel">Добавить комментарий</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="commentForm">
+                        {% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <div class="form-group">
+                            <label for="rating">Оценка:</label>
+                            <div id="star-rating-add">
+                                {% for i in "12345" %}
+                                    <span class="fa fa-star-o"></span>
+                                {% endfor %}
                             </div>
-                            <button type="submit" class="btn btn-primary">Отправить</button>
-                        </form>
-                    </div>
+                            <input type="hidden" id="id_rating" name="rating" value="0">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </form>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var starsAdd = document.querySelectorAll('#star-rating-add .fa');
+
+            starsAdd.forEach(function (star, idx) {
+                star.addEventListener('mouseover', function () {
+                    console.log('Mouse over star index:', idx);
+                    for (var i = 0; i <= idx; i++) {
+                        starsAdd[i].classList.add('fa-star');
+                        starsAdd[i].classList.remove('fa-star-o');
+                    }
+                    for (var i = idx + 1; i < starsAdd.length; i++) {
+                        starsAdd[i].classList.remove('fa-star');
+                        starsAdd[i].classList.add('fa-star-o');
+                    }
+                });
+
+                star.addEventListener('click', function () {
+                    console.log('Clicked on star index:', idx);
+                    var ratingInput = document.querySelector('#id_rating');
+                    ratingInput.value = idx + 1;
+                });
+            });
+
+            document.querySelector('#star-rating-add').addEventListener('mouseleave', function () {
+                var rating = document.querySelector('#id_rating').value;
+                console.log('Rating value:', rating);
+                starsAdd.forEach(function (star, idx) {
+                    if (idx < rating) {
+                        star.classList.add('fa-star');
+                        star.classList.remove('fa-star-o');
+                    } else {
+                        star.classList.remove('fa-star');
+                        star.classList.add('fa-star-o');
+                    }
+                });
+            });
+        });
+
+    </script>
+
+
 {% endblock %}
 
+
+{#{% extends 'base.html' %}#}
+{##}
+{#{% block title %} {{ article.title }} {% endblock %}#}
+{#{% block main %}#}
+{##}
+{#    <div class="container">#}
+{#        <div class="main-content">#}
+{#            {% if article %}#}
+{#                <div class="row">#}
+{#                    <!-- Изображение статьи -->#}
+{#                    <div class="col-md-4">#}
+{#                        <img src="{{ article.image.url }}" class="img-fluid" alt="{{ article.title }}">#}
+{#                    </div>#}
+{#                    <div class="col-md-8">#}
+{#                        <!-- Заголовок статьи -->#}
+{#                        <h1>{{ article.title }}</h1>#}
+{#                        <!-- Дата публикации и автор -->#}
+{#                        <p>#}
+{#                            <small class="text-muted">Дата публикации: {{ article.created_at|date:"d.m.Y" }}</small>#}
+{#                            <br>#}
+{#                            Автор: <a href="#">{{ article.author.username }}</a>#}
+{#                        </p>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <!-- Основной текст -->#}
+{#                <div class="row">#}
+{#                    <div class="col-md-12">#}
+{#                        <p>{{ article.content }}</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endif %}#}
+{#            {% if request.user.is_authenticated %}#}
+{#                <!-- Кнопка "Добавить комментарий" -->#}
+{#                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal">#}
+{#                    Добавить комментарий#}
+{#                </button>#}
+{#            {% endif %}#}
+{##}
+{#            {% if comment %}#}
+{#                <!-- Карточка комментария -->#}
+{#                <div class="card mb-3">#}
+{#                    <div class="card-body">#}
+{#                        <h5 class="card-title">{{ comment.author.username }}</h5>#}
+{#                        <p class="card-text">{{ comment.content }}</p>#}
+{#                        <p class="card-text"><small class="text-muted">Дата комментария: {{ comment.created_at|date:"d.m.Y" }}</small></p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{##}
+{##}
+{##}
+{#    <!-- Модальное окно для формы комментария -->#}
+{#    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">#}
+{#        <div class="modal-dialog" role="document">#}
+{#            <div class="modal-content">#}
+{#                <div class="modal-header">#}
+{#                    <h5 class="modal-title" id="commentModalLabel">Добавить комментарий</h5>#}
+{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                        <span aria-hidden="true">&times;</span>#}
+{#                    </button>#}
+{#                </div>#}
+{#                <div class="modal-body">#}
+{#                    <!-- Форма для комментария -->#}
+{#                    <form method="post">#}
+{#                        <form method="post">#}
+{#                            {% csrf_token %}#}
+{#                            {{ comment_form.as_p }}#}
+{#                        <div class="form-group">#}
+{#                            <label for="comment">Комментарий:</label>#}
+{#                            <textarea class="form-control" id="comment" rows="3"></textarea>#}
+{#                        </div>#}
+{#                            <button type="submit" class="btn btn-primary">Отправить</button>#}
+{#                        </form>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#{% endblock %}#}
+{##}

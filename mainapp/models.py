@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 from authapp.models import User
 
 
@@ -18,9 +20,13 @@ class Article(models.Model):
     categories = models.ManyToManyField(Category)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField(upload_to='static/img', blank=True, null=True)
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('article', args=[str(self.id)])
 
 
 # Модель для комментариев к статьям
@@ -28,6 +34,7 @@ class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
+    rating = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

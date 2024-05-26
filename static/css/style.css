@@ -14,7 +14,6 @@ header {
 }
 
 
-
 /* Стили для слайдера */
 #carouselExampleSlidesOnly {
     margin-bottom: 30px;
@@ -99,21 +98,53 @@ footer {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
+    z-index: 9999;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    display: none;
 }
 
 /* Стили для всплывающего окна */
 .popup {
     background-color: white;
-    margin-top: 5%;
-    margin-left: 35%;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     max-width: 500px;
     justify-content: center;
     align-content: space-between;
+}
+
+/* Стили для личного кабинета */
+.profile-info {
+    margin-bottom: 30px;
+}
+
+.car-list {
+    margin-bottom: 30px;
+}
+
+.car-item {
+    margin-bottom: 10px;
+}
+
+.repairs-table {
+    margin-top: 30px;
+}
+
+.repairs-table th,
+.repairs-table td {
+    vertical-align: middle;
+}
+
+.column {
+    float: left;
+    width: 50%;
+}
+
+/* Очистка флоатов */
+.profile-info:after {
+    content: "";
+    display: table;
+    clear: both;
 }

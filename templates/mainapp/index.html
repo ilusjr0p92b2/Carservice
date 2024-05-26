@@ -1,25 +1,77 @@
 {% extends 'base.html' %}
-{% block main %}
+{% load custom_filters %}
+{% block title %}Главная страница{% endblock %}
+{% block slider %}{% include 'includes/slider.html' %}{% endblock %}
+{% block sidebar %}{% include 'includes/sidebar.html' %}{% endblock %}
 
-    <!-- Центральный блок с карточками статей -->
+{% block main %}
     <div class="col-md-9">
         <div class="main-content">
-            <!-- Карточка статьи -->
-            <div class="card mb-3">
-                <div class="row no-gutters">
-                    <div class="col-md-4">
-                        <img src="image2.jpg" class="card-img" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Название статьи</h5>
-                            <p class="card-text">Краткое описание статьи. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <p class="card-text"><small class="text-muted">Дата публикации: 01.01.2023</small></p>
-                            <a href="#" class="btn btn-primary">Читать далее</a>
+            <!-- Перебор всех статей -->
+            {% for article in articles %}
+                <!-- Карточка статьи -->
+                <div class="card mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="{{ article.image.url }}" class="card-img" alt="{{ article.title }}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ article.title }}</h5>
+                                <p class="card-text">{{ article.content|truncate_words:15 }}</p>
+                                <p class="card-text"><small class="text-muted">Дата публикации: {{ article.published_date|date:"d.m.Y" }}</small></p>
+                                {% if user.is_staff %}
+                                    <a href="{% url 'edit_article' article.id %}" class="btn btn-warning"><i class="fas fa-edit"></i> Редактировать</a>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{ article.id }}">
+                                        <i class="fas fa-trash"></i> Удалить
+                                    </button>
+                                    <!-- Модальное окно для подтверждения удаления -->
+                                    <div class="modal fade" id="deleteModal{{ article.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Подтверждение удаления</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Вы уверены, что хотите удалить эту статью?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                                    <a href="{% url 'delete_article' article.id %}" class="btn btn-danger">Удалить</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <a href="{{ article.get_absolute_url }}" class="btn btn-primary">Читать далее</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
+
+
+            <!-- Пагинация -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if articles.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ articles.previous_page_number }}">Назад</a></li>
+                    {% endif %}
+                    {% for page_num in articles.paginator.page_range %}
+                        {% if articles.number == page_num %}
+                            <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+                        {% elif page_num > articles.number|add:-3 and page_num < articles.number|add:3 %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if articles.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ articles.next_page_number }}">Вперёд</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
         </div>
     </div>
 

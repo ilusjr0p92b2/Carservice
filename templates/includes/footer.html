@@ -12,27 +12,3 @@
     </div>
 </footer>
 
-<script>
-    // Показать popup при нажатии на кнопку "Войти"
-    document.getElementById("loginBtn").addEventListener("click", function () {
-        document.getElementById("login_overlay").style.display = "block";
-        console.log('pup');// Отображаем overlay и popup
-    });
-
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("closeLoginPopupBtn").addEventListener("click", function () {
-             document.getElementById("login_overlay").style.display = "none";
-            // Скрываем overlay и popup при нажатии на кнопку "Закрыть"
-        });
-    });
-
-    // Предотвращение закрытия окна при клике внутри него
-    document.querySelector(".popup").addEventListener("click", function (event) {
-        event.stopPropagation();
-    });
-
-    // Закрыть popup при клике вне его
-    document.querySelector(".overlay").addEventListener("click", function () {
-        document.querySelector(".overlay").style.display = "none"; // Скрываем overlay и popup при клике вне его
-    });
-</script>

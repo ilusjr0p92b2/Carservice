@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Панель заказов{% endblock %}
+{% block main %}
+    <div class="profile-container">
+        <div class="profile-column">
+            <h2>Заказы</h2>
+            <div class="table-wrapper">
+                <table border="1">
+                    <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Время</th>
+                        <th>Клиент</th>
+                        <th>Марка и бренд автомобиля</th>
+                        <th>Заказанные услуги</th>
+                        <th>Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+
+                        <tr>
+                            <td>{{ order.date }}</td>
+                            <td>{{ order.time }}</td>
+                            <td>{{ order.user.first_name }} {{ order.user.last_name }}</td>
+                            <td>{{ order.car.brand }} {{ order.car.model }}</td>
+                            <td>
+                                {% for service in order.services.all %}
+                                    {{ service.name }}<br>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                <form method="post" action="{% url 'mark_as_done' order.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-blue">Отметить как выполненное</button>
+                                </form>
+                                <a href="{% url 'edit_order' order.id %}" class="btn btn-blue">Редактировать</a>
+                                <form method="post" action="{% url 'delete_order' order.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-blue">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

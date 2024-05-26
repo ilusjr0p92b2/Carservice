@@ -14,32 +14,42 @@
         {% if show_filters %}
             <!-- Форма для фильтрации услуг -->
             <h4>Фильтрация</h4>
-            <form id="filter-form">
+{#            <form id="filter-form" method="post">#}
+{#                {% csrf_token %}#}
+{#                <div class="form-group">#}
+{#                    {% for filter in filter_list %}#}
+{#                        <div class="form-check">#}
+{#                            <input class="form-check-input" type="checkbox" name="selected_filters" id="filter_{{ filter.id }}" value="{{ filter.id }}">#}
+{#                            <label class="form-check-label" for="filter_{{ filter.id }}">{{ filter.name }}</label>#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#                <button type="submit" class="btn btn-primary">Применить фильтр</button>#}
+{#            </form>#}
+            <form id="filter-form" method="get">
+                {% csrf_token %}
                 <div class="form-group">
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="category1" value="category1">
-                        <label class="form-check-label" for="category1">Категория 1</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="category2" value="category2">
-                        <label class="form-check-label" for="category2">Категория 2</label>
-                    </div>
-                    <!-- Добавьте дополнительные категории здесь -->
+                    {% for filter in filter_list %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="selected_filters" id="filter_{{ filter.id }}" value="{{ filter.id }}"
+                            {% if filter.id|stringformat:"s" in selected_filters %}checked{% endif %}>
+                            <label class="form-check-label" for="filter_{{ filter.id }}">{{ filter.name }}</label>
+                        </div>
+                    {% endfor %}
                 </div>
                 <button type="submit" class="btn btn-primary">Применить фильтр</button>
             </form>
         {% endif %}
-        {% if not request.user.is_authenticated  %}
+        {% if not request.user.is_authenticated %}
             <h4>Авторизация</h4>
             <!-- Форма для авторизации -->
             <form action="{% url 'login' %}" method="post">
-            {% csrf_token %}
+                {% csrf_token %}
                 <div class="form-group">
                     <input type="email" class="form-control" placeholder="Email" id="email" name="email" required autocomplete="username">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" id="password" name="password"  placeholder="Пароль" required autocomplete="current-password">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Пароль" required autocomplete="current-password">
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Войти</button>
             </form>
