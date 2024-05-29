@@ -6,7 +6,7 @@ from authapp.models import User
 class EmailBackend(BaseBackend):
     def authenticate(self, request, email=None, password=None, **kwargs):
         try:
-            user = User.objects.get()
+            user = User.objects.get(email=email)
         except User.DoesNotExist:
             return None
 
@@ -16,6 +16,6 @@ class EmailBackend(BaseBackend):
 
     def get_user(self, user_id):
         try:
-            return User.objects.get()
+            return User.objects.get(id=user_id)
         except User.DoesNotExist:
             return None
