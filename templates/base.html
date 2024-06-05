@@ -39,11 +39,13 @@
 {% include 'includes/footer.html' %}
 
 
+
+</body>
 <!-- Подключаем скрипты Bootstrap и пользовательский JavaScript -->
 <script>
     // Показать popup при нажатии на кнопку "Войти"
     document.getElementById("loginBtn").addEventListener("click", function () {
-        document.getElementById("login_overlay").style.display = "block";
+        document.getElementById("login_overlay").style.display = "flex";
 
     });
     // Убрать popup при нажатии на кнопку "закрыть"
@@ -68,5 +70,4 @@
 <script src="{% static "js/popper.min.js" %}"></script>
 <script src="{% static "js/bootstrap.min.js" %}"></script>
 
-</body>
 </html>

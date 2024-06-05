@@ -51,7 +51,7 @@
             document.getElementById("selected-services-description").innerText = `Выбранные услуги: ${selectedServices.join(', ')}`;
             document.getElementById("selected-services-input").value = selectedServiceIds.join(',');
 
-            document.getElementById("service_overlay").style.display = "";
+            document.getElementById("service_overlay").style.display = "flex";
         } else {
             alert("Пожалуйста, выберите хотя бы одну услугу.");
         }
